@@ -1,7 +1,12 @@
 <?php
 $GLOBALS['BASE'] = dirname(__DIR__);
-include $BASE . "/models/Shop.php";
 
+//include utils
+include_once __DIR__ . '/utils.php';
+
+// -----SHOP--------
+
+include $BASE . "/models/Shop.php";
 function getAllShop($conn)
 {
     $sql = 'select * from shops';
@@ -45,7 +50,9 @@ function getShopDetail($conn, $shop_id)
     }
 }
 
-// prouct 
+// -----SHOP--------
+
+// -----------Product--------------
 include $BASE . "/models/Product.php";
 
 function getProductByShop($conn, $shop_id)
@@ -71,3 +78,36 @@ function getProductByShop($conn, $shop_id)
     }
     return $listProduct;
 }
+// -----------Product--------------
+
+//-------User-------------
+include $BASE . "/models/User.php";
+function findUser($conn, $emailphone, $password): User | null
+{
+    $sql = null;
+    if (strpos($emailphone, "@") !== false) {
+        $sql = "SELECT * FROM users WHERE email = '" . $emailphone . "' AND password = '" . getMd5($password) . "'";
+    } else {
+        $sql = "SELECT * FROM users WHERE phone = '" . $emailphone . "' AND password = '" . getMd5($password) . "'";
+    }
+
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $userData = $result->fetch_assoc();
+        // Create a new User object
+        $user = new User();
+
+        $user->setUserId($userData['user_id']);
+        $user->setUsername($userData['name']); // Sử dụng setName thay vì setUsername
+        $user->setEmail($userData['email']);
+        $user->setPhone($userData['phone']);
+        $user->setPassword($userData['password']);
+        $user->setAuthentication($userData['authentication']);
+        return $user;
+    } else {
+        return null;
+    }
+}
+
+//-------User-------------

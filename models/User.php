@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 class User
 {
     public $user_id;
@@ -7,6 +8,18 @@ class User
     public $phone;
     public $password;
     public $authentication;
+=======
+
+class User
+{
+    private $user_id;
+    private $username;
+    private $email;
+    private $phone;
+    private $password;
+    private $authentication;
+
+>>>>>>> 2122ef40fc6586d031c296028bc866d1a60e5675
     public function __construct($user_id = null, $username = null, $email = null, $phone = null, $password = null, $authentication = null)
     {
         if ($user_id !== null) {
@@ -19,7 +32,10 @@ class User
         }
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2122ef40fc6586d031c296028bc866d1a60e5675
     public function getUserId()
     {
         return $this->user_id;
@@ -49,6 +65,10 @@ class User
     {
         return $this->authentication;
     }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 2122ef40fc6586d031c296028bc866d1a60e5675
     public function setUserId($user_id): void
     {
         $this->user_id = $user_id;
@@ -78,9 +98,13 @@ class User
     {
         $this->authentication = $authentication;
     }
+<<<<<<< HEAD
 
 
 
 
 
 }
+=======
+}
+>>>>>>> 2122ef40fc6586d031c296028bc866d1a60e5675
