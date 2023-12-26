@@ -1,5 +1,5 @@
 <?php include_once "../includes/opening.php"; ?>
-<?php define("PAGE_TITLE", "Home Page"); ?>
+<?php define("PAGE_TITLE", "Shop Product Page"); ?>
 
 <!-- chưa code bên login nên phải để bằng null không lỗi 2 thứ này () -->
 <?php $user = null; ?>

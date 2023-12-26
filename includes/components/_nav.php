@@ -11,7 +11,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <?php if ($user == null): ?>
                     <li class="nav-item">
-                        <a class="nav-link" href="./login">Login</a>
+                        <a class="nav-link" href="../includes/components/_login.php">Login</a>
                     </li>
                 <?php endif; ?>
                 <?php if ($user != null): ?>
