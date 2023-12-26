@@ -10,15 +10,16 @@ if (isset($_SESSION['user'])) {
 }
 ?>
 
+
 <?php $cart = null;?>
 <?php $listShop = getAllShop($conn);?>
 
 
 <?php include_once '../includes/components/_header.php';?>
 <?php include_once '../includes/components/_nav.php';?>
-<?php include_once '../includes/components/_slider.php';?>
-<?php include_once '../includes/components/_body.php';?>
+<?php include_once '../includes/components/_login.php';?>
 <?php include_once '../includes/components/_footer.php';?>
+
 
 
 <?php include_once "../includes/closing.php";?>

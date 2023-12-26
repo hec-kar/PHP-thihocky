@@ -1,12 +1,14 @@
 <?php
+
 class User
 {
-    public $user_id;
-    public $username;
-    public $email;
-    public $phone;
-    public $password;
-    public $authentication;
+    private $user_id;
+    private $username;
+    private $email;
+    private $phone;
+    private $password;
+    private $authentication;
+
     public function __construct($user_id = null, $username = null, $email = null, $phone = null, $password = null, $authentication = null)
     {
         if ($user_id !== null) {
@@ -18,7 +20,6 @@ class User
             $this->authentication = $authentication;
         }
     }
-
 
     public function getUserId()
     {
@@ -49,6 +50,7 @@ class User
     {
         return $this->authentication;
     }
+
     public function setUserId($user_id): void
     {
         $this->user_id = $user_id;
@@ -78,9 +80,4 @@ class User
     {
         $this->authentication = $authentication;
     }
-
-
-
-
-
 }

@@ -10,27 +10,27 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <?php if ($user == null): ?>
-                    <li class="nav-item">
-                        <a class="nav-link" href="./login">Login</a>
-                    </li>
-                <?php endif; ?>
+                <li class="nav-item">
+                    <a class="nav-link" href="./login.php">Login</a>
+                </li>
+                <?php endif;?>
                 <?php if ($user != null): ?>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Hi
-                            <?= $user->getName() ?>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Profile</a></li>
-                            <li><a class="dropdown-item" href="./views/logout.php">Log out</a></li>
-                        </ul>
-                    </li>
-                <?php endif; ?>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Hi
+                        <?=$user->getUsername()?>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="./logout.php">Log out</a></li>
+                    </ul>
+                </li>
+                <?php endif;?>
                 <li class="nav-item">
                     <a class="nav-link" href="shopping-cart">
                         <span class="badge badge-pill bg-danger">
-                            <?= $cart == null ? 0 : count($cart) ?>
+                            <?=$cart == null ? 0 : count($cart)?>
                         </span>
                         <span><i class="fas fa-shopping-cart"></i></span>
                     </a>
