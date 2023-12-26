@@ -78,6 +78,30 @@ function getProductByShop($conn, $shop_id)
     }
     return $listProduct;
 }
+
+function findProductById($conn, $product_id): Product | null
+{
+    $sql = "select * from products where product_id = " . $product_id;
+    $result = $conn->query($sql);
+    if ($result->num_rows > 0) {
+        $productData = $result->fetch_assoc();
+        $product = new Product();
+
+        $product->setProductId($productData["product_id"]);
+        $product->setName($productData["name"]);
+        $product->setDescription($productData["description"]);
+        $product->setShopId($productData["shop_id"]);
+        $product->setQuantity($productData["quantity"]);
+        $product->setPrice($productData["price"]);
+        $product->setType($productData["type"]);
+        $product->setImage($productData["image"]);
+
+        return $product;
+    } else {
+        return null;
+    }
+}
+
 // -----------Product--------------
 
 //-------User-------------

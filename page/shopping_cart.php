@@ -1,5 +1,5 @@
 <?php include_once "../includes/opening.php";?>
-<?php define("PAGE_TITLE", "Home Page");?>
+<?php define("PAGE_TITLE", "Shopping Cart Page");?>
 
 <?php
 session_start();
@@ -16,13 +16,12 @@ if (isset($_SESSION['cart'])) {
 }
 ?>
 
-<?php $listShop = getAllShop($conn);?>
+
 
 
 <?php include_once '../includes/components/_header.php';?>
 <?php include_once '../includes/components/_nav.php';?>
-<?php include_once '../includes/components/_slider.php';?>
-<?php include_once '../includes/components/_body.php';?>
+<?php include_once '../includes/components/_cart.php';?>
 <?php include_once '../includes/components/_footer.php';?>
 
 

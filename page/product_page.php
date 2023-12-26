@@ -1,10 +1,22 @@
-<?php include_once "../includes/opening.php"; ?>
-<?php define("PAGE_TITLE", "Shop Product Page"); ?>
+<?php include_once "../includes/opening.php";?>
+<?php define("PAGE_TITLE", "Shop Product Page");?>
 
-<!-- chưa code bên login nên phải để bằng null không lỗi 2 thứ này () -->
-<?php $user = null; ?>
-<?php $cart = null; ?>
-<!--  -->
+<?php
+session_start();
+if (isset($_SESSION['user'])) {
+    $user = $_SESSION['user'];
+} else {
+    $user = null;
+}
+
+if (isset($_SESSION['cart'])) {
+    $cart = $_SESSION['cart'];
+} else {
+    $cart = null;
+}
+?>
+
+
 
 <?php
 $shop_id = 0;
@@ -24,10 +36,10 @@ $listProduct = getProductByShop($conn, $shop_id);
 
 
 
-<?php include_once '../includes/components/_header.php'; ?>
-<?php include_once '../includes/components/_nav.php'; ?>
-<?php include_once '../includes/components/_product_by_shop.php'; ?>
-<?php include_once '../includes/components/_footer.php'; ?>
+<?php include_once '../includes/components/_header.php';?>
+<?php include_once '../includes/components/_nav.php';?>
+<?php include_once '../includes/components/_product_by_shop.php';?>
+<?php include_once '../includes/components/_footer.php';?>
 
 
-<?php include_once "../includes/closing.php"; ?>
+<?php include_once "../includes/closing.php";?>

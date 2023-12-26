@@ -8,6 +8,12 @@ if (isset($_SESSION['user'])) {
 } else {
     $user = null;
 }
+
+if (isset($_SESSION['cart'])) {
+    $cart = $_SESSION['cart'];
+} else {
+    $cart = null;
+}
 ?>
 
 
