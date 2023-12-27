@@ -16,8 +16,13 @@ if (isset($_SESSION['cart'])) {
 }
 ?>
 
-<?php $listShop = getAllShop($conn);?>
-
+<?php
+if (isset($_GET['query'])) {
+    include_once '../controllers/SearchController.php';
+} else {
+    $listShop = getAllShop($conn);
+}
+?>
 
 <?php include_once '../includes/components/_header.php';?>
 <?php include_once '../includes/components/_nav.php';?>

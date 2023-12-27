@@ -1,5 +1,5 @@
 <?php
-$error_login = "";
+
 ?>
 
 <section class="vh-100">
@@ -12,7 +12,7 @@ $error_login = "";
             <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
                 <form action="../controllers/LoginController.php" method="post">
                     <h1 style="padding: 30px 0 30px 0">Information Login</h1>
-                    <div class="link-danger"><?php echo $error_login; ?></div>
+                    <div class="link-danger"><?php echo isset($error_login) ? $error_login : ""; ?></div>
                     <!-- Email input -->
                     <div class="form-outline mb-4">
                         <input type="text" name="emailphone" class="form-control form-control-lg"

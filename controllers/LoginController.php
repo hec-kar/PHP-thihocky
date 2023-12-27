@@ -10,7 +10,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if ($user === null) {
         $_SESSION["error_login"] = "Your information is incorrect";
-        header("Location: login.php");
+        header("Location: ../page/login.php");
         exit();
     } else {
         if ($user->getAuthentication() != 0) {

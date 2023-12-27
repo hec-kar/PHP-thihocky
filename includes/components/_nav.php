@@ -28,7 +28,7 @@
                 </li>
                 <?php endif;?>
                 <li class="nav-item">
-                    <a class="nav-link" href="shopping_cart.php">
+                    <a class="nav-link" href="<?php echo $user != null ? "shopping_cart.php" : "login.php"; ?>">
                         <span class="badge badge-pill bg-danger">
                             <?=$cart == null ? 0 : count($cart)?>
                         </span>

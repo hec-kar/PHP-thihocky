@@ -12,16 +12,16 @@
                                 <div class="p-5">
                                     <div class="d-flex justify-content-between align-items-center mb-5">
                                         <h1 class="fw-bold mb-0 text-black">Đơn hàng của bạn</h1>
-                                        <h6 class="mb-0"><a href="shopping-cart?clear=OK" class="text-body"><i
-                                                    class="fas fa-long me-2"></i>Xóa</a></h6>
-                                        <h6 class="mb-0 text-muted"><?php echo count($cart); ?> món</h6>
+                                        <h6 class="mb-0"><a href="../controllers/CartController.php?clear=OK"
+                                                class="text-body"><i class="fas fa-long me-2"></i>Xóa</a></h6>
+                                        <h6 class="mb-0 text-muted"><?php echo isset($cart) ? count($cart) : 0; ?> món
+                                        </h6>
                                     </div>
                                     <hr class="my-4">
-                                    <?php
-$total = 0;
-?>
+                                    <?php $total = 0;?>
+                                    <?php if (isset($cart)) {?>
                                     <?php foreach ($cart as $product): ?>
-                                    <form action="shopping-cart" method="post">
+                                    <form action="../controllers/CartController.php" method="post">
                                         <!-- Product in cart -->
                                         <div class="row mb-4 d-flex justify-content-between align-items-center">
                                             <div class="col-md-2 col-lg-2 col-xl-2">
@@ -62,10 +62,10 @@ $total = 0;
                                     <hr class="my-4">
                                     <?php $total += $product->quantity * $product->price;?>
                                     <?php endforeach;?>
+                                    <?php }?>
                                     <div class="pt-5">
-                                        <h6 class="mb-0"><a href="./home" class="text-body"><i
+                                        <h6 class="mb-0"><a href="./home.php" class="text-body"><i
                                                     class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
-
                                     </div>
                                 </div>
                             </div>
@@ -74,7 +74,8 @@ $total = 0;
                                     <h3 class="fw-bold mb-5 mt-2 pt-1">Xác nhận đơn hàng, thanh toán</h3>
                                     <hr class="my-4">
 
-                                    <form action="payment" method="post" onsubmit="return validateForm()">
+                                    <form action="../controllers/CartController.php" method="post"
+                                        onsubmit="return validateForm()">
                                         <h5 class="text-uppercase mb-3">Ghi chú</h5>
 
                                         <div class="mb-5">
@@ -92,9 +93,9 @@ $total = 0;
                                             <h5 class="text-uppercase">Thành tiền</h5>
                                             <h5><?php echo $total; ?></h5>
                                         </div>
-
-                                        <button type="submit" class="btn btn-dark btn-block btn-lg" onclick=""
-                                            data-mdb-ripple-color="dark">Thanh toán</button>
+                                        <?php echo isset($_SESSION['payment_error']) == null ? "" : $_SESSION['payment_error']; ?>
+                                        <button type="submit" class="btn btn-dark btn-block btn-lg" name=action
+                                            value="payment" data-mdb-ripple-color="dark">Thanh toán</button>
                                     </form>
                                     <script>
                                     function showSuccess() {
@@ -111,8 +112,6 @@ $total = 0;
                                             return false; // Ngăn chặn việc submit form nếu thông tin chưa được nhập
                                         }
                                         showSuccess();
-                                        // Nếu mọi thứ đều hợp lệ, cho phép
-                                        submit form
                                         return true;
                                     }
                                     </script>

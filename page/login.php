@@ -14,10 +14,13 @@ if (isset($_SESSION['cart'])) {
 } else {
     $cart = null;
 }
+
+if (isset($_SESSION['error_login'])) {
+    $error_login = $_SESSION['error_login'];
+}
 ?>
 
 
-<?php $cart = null;?>
 <?php $listShop = getAllShop($conn);?>
 
 
