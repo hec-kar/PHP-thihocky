@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 25, 2023 at 02:23 AM
+-- Generation Time: Dec 28, 2023 at 03:36 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `phongpee`
+-- Database: `php-phongpee`
 --
 
 DELIMITER $$
@@ -26,11 +26,31 @@ DELIMITER $$
 -- Procedures
 --
 CREATE DEFINER=`root`@`localhost` PROCEDURE `GetOrdersByShopId` (IN `shopId` INT)   BEGIN
-    SELECT orders.order_id, user_id, note, `date`, due_time, products.shop_id
+    SELECT DISTINCT orders.order_id, user_id, note, `date`, due_time, products.shop_id, status
     FROM orders
     JOIN orders_detail ON orders.order_id = orders_detail.orders_id
     JOIN products ON orders_detail.product_id = products.product_id
     WHERE products.shop_id = shopId;
+END$$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `GetProductDetails` (IN `order_id_param` INT)   BEGIN
+    SELECT
+        products.product_id,
+        products.name,
+        products.description,
+        products.shop_id,
+        orders_detail.quantity,
+        products.price,
+        products.type,
+        products.image
+    FROM
+        products
+    JOIN
+        orders_detail ON products.product_id = orders_detail.product_id
+    JOIN
+        orders ON orders_detail.orders_id = orders.order_id
+    WHERE
+        orders.order_id = order_id_param;
 END$$
 
 DELIMITER ;
@@ -46,27 +66,33 @@ CREATE TABLE `orders` (
   `user_id` int NOT NULL,
   `note` varchar(200) NOT NULL,
   `date` datetime NOT NULL,
-  `due_time` int NOT NULL
+  `due_time` int NOT NULL,
+  `status` int NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `user_id`, `note`, `date`, `due_time`) VALUES
-(1, 1, '', '2023-12-23 00:00:00', 30),
-(2, 1, '', '2023-12-23 00:00:00', 30),
-(3, 2, '', '2023-12-23 00:00:00', 30),
-(4, 2, '', '2023-12-23 00:00:00', 30),
-(5, 1, '44 Nguyễn Huệ', '2023-12-23 00:00:00', 30),
-(6, 1, '', '2023-12-23 00:00:00', 30),
-(7, 1, '', '2023-12-23 00:00:00', 30),
-(8, 1, '', '2023-12-23 00:00:00', 30),
-(9, 1, '44 Nguyễn Huệ', '2023-12-23 00:00:00', 30),
-(10, 1, '', '2023-12-23 00:00:00', 30),
-(11, 1, '', '2023-12-23 00:00:00', 30),
-(12, 1, '44 Nguyễn Huệ', '2023-12-24 00:00:00', 30),
-(13, 1, '4/24 KTT Xã Tắc', '2023-12-24 00:00:00', 30);
+INSERT INTO `orders` (`order_id`, `user_id`, `note`, `date`, `due_time`, `status`) VALUES
+(1, 1, '', '2023-12-23 00:00:00', 30, 0),
+(2, 1, '', '2023-12-23 00:00:00', 30, 0),
+(3, 2, '', '2023-12-23 00:00:00', 30, 1),
+(4, 2, '', '2023-12-23 00:00:00', 30, 1),
+(5, 1, '44 Nguyễn Huệ', '2023-12-23 00:00:00', 30, 1),
+(6, 1, '', '2023-12-23 00:00:00', 30, 1),
+(7, 1, '', '2023-12-23 00:00:00', 30, 1),
+(8, 1, '', '2023-12-23 00:00:00', 30, 0),
+(9, 1, '44 Nguyễn Huệ', '2023-12-23 00:00:00', 30, 0),
+(10, 1, '', '2023-12-23 00:00:00', 30, 0),
+(11, 1, '', '2023-12-23 00:00:00', 30, 0),
+(12, 1, '44 Nguyễn Huệ', '2023-12-24 00:00:00', 30, 0),
+(13, 1, '4/24 KTT Xã Tắc', '2023-12-24 00:00:00', 30, 0),
+(14, 1, '44 Nguyễn Huệ', '2023-12-27 00:00:00', 30, 0),
+(15, 1, '44 Nguyễn Huệ', '2023-12-27 00:00:00', 30, 0),
+(16, 1, '25 Nguyễn trãi', '2023-12-27 00:00:00', 30, 0),
+(17, 1, '25 Nguyễn trãi', '2023-12-27 00:00:00', 30, 0),
+(18, 1, '22 nguyễn huệ', '2023-12-27 00:00:00', 30, 0);
 
 -- --------------------------------------------------------
 
@@ -96,7 +122,15 @@ INSERT INTO `orders_detail` (`orders_id`, `product_id`, `quantity`) VALUES
 (10, 2, 1),
 (11, 2, 1),
 (12, 2, 2),
-(13, 2, 3);
+(13, 2, 3),
+(15, 2, 1),
+(16, 2, 4),
+(17, 2, 4),
+(17, 3, 4),
+(17, 4, 2),
+(17, 5, 2),
+(18, 2, 2),
+(18, 7, 5);
 
 -- --------------------------------------------------------
 
@@ -107,7 +141,7 @@ INSERT INTO `orders_detail` (`orders_id`, `product_id`, `quantity`) VALUES
 CREATE TABLE `products` (
   `product_id` int NOT NULL,
   `name` varchar(50) NOT NULL,
-  `decription` varchar(100) NOT NULL,
+  `description` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `shop_id` int NOT NULL,
   `quantity` int NOT NULL,
   `price` double NOT NULL,
@@ -119,7 +153,7 @@ CREATE TABLE `products` (
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`product_id`, `name`, `decription`, `shop_id`, `quantity`, `price`, `type`, `image`) VALUES
+INSERT INTO `products` (`product_id`, `name`, `description`, `shop_id`, `quantity`, `price`, `type`, `image`) VALUES
 (1, 'Bánh mì nướng bơ tỏi', 'Cái gì cũng có cái giá của nó, tiền đi đôi với chất lượng', 4, 500, 30000, 1, 'pizza-kat_banh-my-nuong-bo-toi.jpeg'),
 (2, 'Bắp chiên bơ', 'Cái gì cũng có cái giá của nó, tiền đi đôi với chất lượng', 1, 500, 30000, 1, 'alphago_bap-chien-bo.jpeg'),
 (3, 'Đùi gà 1 cái', 'Gà max ngon', 1, 50, 35000, 0, 'alphago_ga-ran-1-dui.jpeg'),
@@ -306,7 +340,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `order_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `products`

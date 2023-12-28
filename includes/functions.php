@@ -136,6 +136,36 @@ function findProductById($conn, $product_id): Product | null
     }
 }
 
+function findByOrder($conn, $order_id)
+{
+    try {
+        $listProduct = array();
+        $sql = "CALL GetProductDetails(?)";
+        $sttm = $conn->prepare($sql);
+        $sttm->bind_param("i", $order_id);
+        $sttm->execute();
+        $rs = $sttm->get_result();
+
+        while ($row = $rs->fetch_assoc()) {
+            $product_id = $row['product_id'];
+            $name = $row['name'];
+            $description = $row['description'];
+            $shop_id = $row['shop_id'];
+            $quantity = $row['quantity'];
+            $price = $row['price'];
+            $type = $row['type'];
+            $image = $row['image'];
+
+            $newProduct = new Product($product_id, $name, $description, $shop_id, $quantity, $price, $type, $image);
+            array_push($listProduct, $newProduct);
+        }
+        return $listProduct;
+    } catch (Exception $ex) {
+        echo "Error: " . $ex->getMessage();
+    }
+    return null;
+}
+
 // -----------Product--------------
 
 //-------User-------------
@@ -170,6 +200,8 @@ function findUser($conn, $emailphone, $password): User | null
 //-------User-------------
 
 //-----------ORDER---------------
+include $BASE . "/models/Order.php";
+
 function insertOrder($conn, $user_id, $note)
 {
     $sql = "INSERT INTO orders (user_id, note, date, due_time) VALUES (?, ?, ?, ?)";
@@ -195,10 +227,80 @@ function insertOrder($conn, $user_id, $note)
     }
     return -1;
 }
+function findOrderByShop($conn, $shop_id)
+{
+    $sql = "CALL GetOrdersByShopId(?)";
+    try {
+        $listOrder = array();
+        $sttm = $conn->prepare($sql);
+        $sttm->bind_param("i", $shop_id);
+        $sttm->execute();
+        $rs = $sttm->get_result();
+        while ($row = $rs->fetch_assoc()) {
+            $order = new Order();
+            $order->setOrderId($row["order_id"]);
+            $order->setUserId($row["user_id"]);
+            $order->setNote($row["note"]);
+            $order->setDate($row["date"]);
+            $order->setDueTime($row["due_time"]);
+            $order->setStatus($row["status"]);
+            array_push($listOrder, $order);
+        }
+        return $listOrder;
+    } catch (Exception $ex) {
+        // Handle the exception as needed
+        echo "Error: " . $ex->getMessage();
+    }
+
+    return null;
+}
+
+function findOrder($conn, $order_id)
+{
+    $sql = "SELECT * FROM orders WHERE order_id = ?";
+    try {
+        $sttm = $conn->prepare($sql);
+        $sttm->bind_param("i", $order_id);
+        $sttm->execute();
+        $rs = $sttm->get_result();
+
+        if ($row = $rs->fetch_assoc()) {
+            $order = new Order();
+            $order->setOrderId($row["order_id"]);
+            $order->setUserId($row["user_id"]);
+            $order->setNote($row["note"]);
+            $order->setDate($row["date"]);
+            $order->setDueTime($row["due_time"]);
+            $order->setStatus($row["status"]);
+
+            return $order;
+        }
+    } catch (Exception $ex) {
+        // Handle the exception as needed
+        echo "Error: " . $ex->getMessage();
+    }
+
+    return null;
+}
+
+function updateOrder($conn, $order_id)
+{
+    try {
+        $sql = "UPDATE orders SET status = 1 WHERE order_id = ?";
+        $sttm = $conn->prepare($sql);
+        $sttm->bind_param("i", $order_id);
+        $sttm->execute();
+        return true;
+    } catch (Exception $ex) {
+        echo "Error: " . $ex->getMessage();
+    }
+    return false;
+}
+
 //-----------ORDER---------------
 
 //-----------ORDER_DETAIL---------------
-
+include $BASE . "/models/OrderDetail.php";
 function insertOrderDetail($conn, $order_id, $product_id, $quantity)
 {
     $sql = "INSERT INTO orders_detail (orders_id, product_id, quantity) VALUES (?, ?, ?)";
